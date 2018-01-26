@@ -1,14 +1,18 @@
 <template>
 <div>
 <div class="album-container">
-  <div class="album-item" v-for="album in albums" :key='album.key'>
+  <div class="album-item" v-for="album in albums" :key='album.key' @click="albumNavi(album.id)">
     <el-card :body-style="{ padding: '0px' }">
-      <img :src="'http://i.imgur.com/'+album.cover+'m.png'" width="320px" class="image">
+      <div class="cover-container">
+        <img :src="'http://i.imgur.com/'+album.cover+'m.png'" class="cover-image">
+      </div>
       <div style="padding: 14px;">
         <span>{{album.title? album.title:"沒有標體"}}</span>
-        <div class="bottom clearfix">
-          <el-button type="text" class="button" @click="albumNavi(album.id)">操作按钮</el-button>
-          {{album.id}}
+        <br/>
+        <div style="text-align:right;">
+          <span>
+          {{(new Date(album.datetime*1000)).toLocaleDateString()}}
+          </span>
         </div>
       </div>
     </el-card>
@@ -21,20 +25,31 @@
 
 <style lang="scss" scoped>
 .album-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: center;
+  display: grid;
+  grid-gap: 20px 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
-img {
-  object-fit: cover;
-  width: 320px;
-  height: 180px;
+.cover-container {
+  position: relative;
+  padding-top: 56.25%;
+  width: 100%;
 }
-.album-item {
-  width: 320px;
-  height: auto;
-  margin: 10px 0px 10px 0px;
+.cover-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.el-card {
+  transition: box-shadow 0.5s;
+}
+.el-card:hover {
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 </style>
 
