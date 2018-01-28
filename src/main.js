@@ -1,10 +1,12 @@
 import Vue from 'vue'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
 import App from './App.vue'
 import router from './router'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
 
-Vue.use(ElementUI)
+Vue.use(VueAwesomeSwiper)
+
+require('swiper/dist/css/swiper.css')
+
 new Vue({
   el: '#app',
   router,

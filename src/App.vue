@@ -1,25 +1,6 @@
 <template>
 <div id="app">
-  <div class="main-head">
-    <div class="intro">
-      <img src="./assets/logo.png">
-      <div >
-        台科大大帥哥<br/>
-        建中畢業<br/>
-        還有女朋友<br/>
-        我就問你羨慕不羨慕<br/>
-        再加一行好了<br />
-      </div>
-    </div>
-    <el-carousel trigger="click" class="main-carousel">
-        <el-carousel-item>
-            <img src="https://i.imgur.com/6OKzArF.png"  width="80%" class="image" >
-        </el-carousel-item>
-        <el-carousel-item>
-            <img src="https://i.imgur.com/cMbnLt6.png"  width="80%" class="image" >
-        </el-carousel-item>
-    </el-carousel>
-  </div>
+  <Header />
   <div  class="container">
     <Albums />
     <router-view/>
@@ -27,43 +8,35 @@
 </div>
 </template>
 
-<style lang="scss" scope>
-.intro {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  width: 250px;
-  margin-right: 20px;
-}
-.main-head {
-  display: flex;
-
-  widows: 100%;
-  flex-direction: row;
-  background: #c63d0f;
-  padding: 8px 12% 8px 12%;
-}
-.main-carousel {
-  flex: 5;
-}
+<style lang="scss" scoped>
 .container {
   padding: 32px 12% 8px 12%;
+  @media only screen and (max-width: 768px) {
+    padding: 32px 16px 8px 16px;
+  }
 }
 </style>
+
 
 <style>
 body {
-  background: #fdf3e7;
+  background: #edd9c0;
+  margin: 0 0 0 0;
+}
+html {
+  font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro",
+    "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;
 }
 </style>
 
-
 <script>
 import Albums from "./components/Albums";
+import Header from "./components/Header";
 
 export default {
   name: "App",
   components: {
+    Header,
     Albums
   }
 };
