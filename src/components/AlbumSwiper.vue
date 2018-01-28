@@ -5,7 +5,7 @@
       @mouseout="swiperButtonVisable = false">
         <swiper :options="swiperOption" class="swiper-box album-image" >
         <swiper-slide class="swiper-item" v-for="image in images" :key="image.key">
-            <img :src="'http://i.imgur.com/'+image+'m.png'" class="album-image"/>
+            <img v-lazy="'http://i.imgur.com/'+image+'m.png'" class="album-image"/>
         </swiper-slide>
         <swiper-slide class="swiper-item" v-if="!loaded">
             <img src="../assets/loading.svg" class="album-image">
@@ -103,7 +103,6 @@ export default {
             headers: config.IMGUR_HEADER
           })
           .then(response => {
-            console.log(response.data.data);
             this.images.length = 0;
             response.data.data.forEach(element => {
               this.images.push(element.id);

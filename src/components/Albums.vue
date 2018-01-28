@@ -11,8 +11,10 @@
       </div>
       <AlbumSwiper :cover="album.cover" :album-id="album.id" />
     </div>
-  <AlbumLightBox v-if="lightBoxAlbumId" :lightBoxAlbumId="lightBoxAlbumId" @hideLightBox="lightBoxAlbumId = ''"/>
-</div>
+    <transition>
+    <AlbumLightBox v-if="lightBoxAlbumId" :lightBoxAlbumId="lightBoxAlbumId" @hideLightBox="lightBoxAlbumId = ''"/>
+    </transition>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -27,12 +29,12 @@
   overflow: auto;
   background: #f4f4f4;
   border: 1px solid #ebeef5;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 6px 8px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.5s;
   color: #303133;
 }
 .album-card:hover {
-  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 6px 12px 8px 0 rgba(0, 0, 0, 0.2);
 }
 .album-text {
   padding: 8px 8px 4px 8px;
@@ -45,6 +47,10 @@
   position: absolute;
   right: 4px;
   bottom: 4px;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 3s;
 }
 </style>
 

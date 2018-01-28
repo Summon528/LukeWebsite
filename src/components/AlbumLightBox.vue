@@ -1,33 +1,34 @@
 <template>
-<transition name="fade">
-    <div class="album-light-box" v-if="lightBoxAlbumId" @click="hideLightBox">
-      <img src="../assets/close.svg" class="close-button" @click="hideLightBox">
-            <swiper
-              :options="swiperOptionTop"
-              class="gallery-top"
-              ref="swiperTop"
-              :if="lightBoxAlbumId">
-                <swiper-slide v-for="image in images" :key="image.key">
-                  <div class="swiper-zoom-container">
-                    <div class="gallery-body">
-                      <img class="gallery-image" :src="'http://i.imgur.com/'+image.id+'.png'" />
-                      <div v-if="image.description" class="gallery-description">{{image.description}}</div>
-                    </div>
+  <div class="album-light-box" v-if="lightBoxAlbumId" @click="hideLightBox">
+    <img v-if="!loaded" src="../assets/loading.svg" class="loading-svg">
+    <img src="../assets/close.svg" class="close-button" @click="hideLightBox">
+          <swiper
+            :options="swiperOptionTop"
+            class="gallery-top"
+            ref="swiperTop"
+            :if="lightBoxAlbumId">
+              <swiper-slide v-for="(image,idx) in images" :key="image.key">
+                <div class="swiper-zoom-container">
+                  <div class="gallery-body">
+                    <img v-if="idx != 0" class="gallery-image swiper-lazy" :data-src="'http://i.imgur.com/'+image.id+'.png'" />
+                    <img v-else class="gallery-image swiper-lazy" :src="'http://i.imgur.com/'+image.id+'.png'" />
+                    <div v-if="image.description" class="gallery-description">{{image.description}}</div>
                   </div>
-                </swiper-slide>
-                <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
-                <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
-            </swiper>
-            <swiper
-              :options="swiperOptionThumbs"
-              class="gallery-thumbs"
-              ref="swiperThumbs">
-                <swiper-slide v-for="image in images" :key="image.key">
-                  <img :src="'http://i.imgur.com/'+image.id+'s.png'"/>
-                </swiper-slide>
-            </swiper>
-    </div>
-  </transition>
+                  <div v-if="idx != 0" class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                </div>
+              </swiper-slide>
+              <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+              <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+          </swiper>
+          <swiper
+            :options="swiperOptionThumbs"
+            class="gallery-thumbs"
+            ref="swiperThumbs">
+              <swiper-slide v-for="image in images" :key="image.key">
+                <img :src="'http://i.imgur.com/'+image.id+'s.png'"/>
+              </swiper-slide>
+          </swiper>
+  </div>
 </template>
 
 <script>
@@ -40,8 +41,11 @@ export default {
   data() {
     return {
       images: [],
+      loaded: false,
       swiperOptionTop: {
+        preloadImages: false,
         zoom: true,
+        lazy: true,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
@@ -58,7 +62,7 @@ export default {
   },
   created() {
     if (this.lightBoxAlbumId) {
-      console.log("wut");
+      document.body.style.overflow = "hidden";
       this.images.length = 0;
       axios
         .get(config.IMGUR_API + "/album/" + this.lightBoxAlbumId + "/images", {
@@ -66,7 +70,6 @@ export default {
         })
         .then(response => {
           this.images.length = 0;
-          console.log(response.data.data);
           this.images = response.data.data;
           this.$nextTick(() => {
             const swiperTop = this.$refs.swiperTop.swiper;
@@ -74,8 +77,12 @@ export default {
             swiperTop.controller.control = swiperThumbs;
             swiperThumbs.controller.control = swiperTop;
           });
+          this.loaded = true;
         });
     }
+  },
+  destroyed() {
+    document.body.style.overflow = "auto";
   },
   methods: {
     hideLightBox: function(event) {
@@ -86,6 +93,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.loading-svg {
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
 .album-light-box {
   box-sizing: border-box;
   position: fixed;
@@ -115,7 +130,7 @@ export default {
     height: $gallery-top-height;
   }
   .gallery-body {
-    position: absolute;
+    position: relative;
     max-width: 1366px;
   }
   .gallery-image {
@@ -133,9 +148,9 @@ export default {
 }
 
 .gallery-thumbs {
-  height: 10%;
+  height: calc(10% + 16px);
   box-sizing: border-box;
-  padding: 16px 0px 16px 0px;
+  padding: 8px 0px 8px 0px;
   .swiper-slide {
     width: 100px;
     height: 100%;
