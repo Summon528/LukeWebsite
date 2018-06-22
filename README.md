@@ -1,6 +1,7 @@
 # luke
 
-> Luke's Website
+> http://ckchen.netlify.com  
+> Just playing with vue js, basically an imgur wrapper.
 
 ## Build Setup
 
