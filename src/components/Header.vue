@@ -1,7 +1,7 @@
 <template>
   <div class="main-head">
     <div class="intro">
-      <img class="intro-img" src="http://www.cacanews.com/imgs/image/140/14067241.jpg">
+      <img class="intro-img" src="https://i.imgur.com/MaYCUne.jpg">
       <!-- <div class="intro-img"></div> -->
         <div class="intro-text">
           台科大大帥哥<br/>
